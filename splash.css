@@ -45,8 +45,6 @@
 
 .splash-left {
   animation-fill-mode: both;
-  animation-delay:  0s;
-  animation-duration: 3s;
   animation-name: splash-left;
 }
 
@@ -66,10 +64,7 @@
 
 .splash-right {
   animation-fill-mode: both;
-  animation-delay:  0s;
-  animation-duration: 3s;
   animation-name: splash-right;
-
 }
 
 @keyframes splash-right {

@@ -1,12 +1,12 @@
 /*
- * Splash Stateless React Component
+ * Splash React Component
  *
  * Copyright © Roman Nosov 2016
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE.txt file in the root directory of this source tree.
  */
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 
 const
   propTypes = {
@@ -37,7 +37,7 @@ function chr(w, reverse) {
     , (ch, i) => (
         <span
           key={i}
-          className={ reverse?'splash-left':'splash-right' }
+          className={ reverse ? 'splash-left' : 'splash-right' }
           style={animate(i, 0, len)}
         >
           {ch}
@@ -46,25 +46,67 @@ function chr(w, reverse) {
   );
 }
 
-function Splash({ style, className, text, src, children, ...props }) {
-  const [w1, w2] = text.split(' ', 2);
-  return (
-    <div { ...props } style={style} className={ 'splash'+(className?' '+className:'') }>
-      <img src={src} />
+class Splash extends Component {
+
+  state = {
+    isMounted: false,
+  };
+
+  componentDidMount() {
+    this.setState({ isMounted: true });
+  }
+
+  chr(w, reverse) {
+    const len = w.length;
+    return Array.prototype.map.call(w
+      , (ch, i) => (
+          <span
+            key={i}
+            className={ this.state.isMounted ? (reverse ? 'splash-left' : 'splash-right') : void 0 }
+            style={ this.state.isMounted ? animate(i, 0, len) : void 0 }
+          >
+            {ch}
+          </span>
+        )
+    );
+  }
+
+  header(text) {
+    const [w1, w2] = text.split(' ', 2);
+    return (
       <h1>
         {do{
           if (w1)
-            <span className="splash-word">{chr(w1, true)}</span>;
+            <span className="splash-word">{this.chr(w1, true)}</span>
         }}
         {do{
           if (w2)
-            <span className="splash-word">{chr(w2, false)}</span>;
+            <span className="splash-word">{this.chr(w2, false)}</span>
         }}
       </h1>
-    </div>
-  );
-}
+    );
+  }
 
+  render() {
+    const { style, className, text, src, children, ...props } = this.props;
+     return (
+       <div { ...props } style={style} className={ 'splash'+(className?' '+className:'') }>
+        <img src={src} />
+        {do{
+          if (this.state.isMounted) {
+            this.header(text)
+          }
+          else {
+            <noscript>
+              {this.header(text)}
+            </noscript>
+          }
+        }}
+       </div>
+     );
+  }
+
+}
 Splash.propTypes = propTypes;
 Splash.defaultProps = defaultProps;
 

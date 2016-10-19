@@ -1,6 +1,6 @@
 {
   "name": "react-splash",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "author": "Roman Nosov <rnosov@gmail.com>",
   "description": "Easily add splash images with animated text to React web sites",
   "license": "MIT",
